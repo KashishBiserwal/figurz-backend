@@ -26,7 +26,9 @@ app.use("/api/auth", authRoute)
 app.use("/api/products", productRoute)
 app.use("/api/carts", cartRoute)
 
-
+app.get("/", (req, res) => {
+  res.status(200).send("Express api on vercel.")
+})
 // app.get("/products/:cat", (req, res) => {
 //   const {cat} = req.params
 //   const cat_products = products.filter((item) => {
