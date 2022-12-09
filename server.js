@@ -15,7 +15,7 @@ dotenv.config();
 
 mongoose
   .set('strictQuery', true)
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("DB Connection Succesful"))
   .catch((err) => {
     console.log(err);
