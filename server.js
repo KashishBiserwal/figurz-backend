@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors')
 const mongoose = require("mongoose")
 const dotenv = require('dotenv')
 // const {products} = require("./data")
@@ -21,10 +22,12 @@ mongoose
     console.log(err);
   });
 app.use(express.json())
+app.use(cors())
 app.use("/api/user", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/products", productRoute)
 app.use("/api/carts", cartRoute)
+
 
 app.get("/", (req, res) => {
   res.status(200).send("Express api on vercel.")
