@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const ApiFeatures = require('../utils/apiFeatures');
 const { verifyTokenAndAdmin } = require('./verifyToken');
 
 const router = require('express').Router();
@@ -50,26 +51,41 @@ router.get("/find/:id", async (req, res) => {
 
 //get all products
 router.get("/", async (req, res) => {
-    const qNew = req.query.new;
-    const qCategory = req.query.category;
+
+    const resultPerPage = 5;
+
+    const apiFeatures = new ApiFeatures(Product.find(), req.query)
+    .search()
+    .filter()
+    .pagination(resultPerPage);
+
     try{
-        let products;
-        
-        if(qNew){
-            products = await Product.find().sort({createdAt: -1}).limit(5)
-        }else if(qCategory){
-            products = await Product.find({
-                category: {
-                    $in: [qCategory]
-                }
-            })
-        }else{
-            products = await Product.find();
-        }
+        const products = await apiFeatures.query;
         res.status(200).json(products)
     }catch(err){
         res.status(500).json(err)
     }
+
+    // const qNew = req.query.new;
+    // const qCategory = req.query.category;
+    // try{
+    //     let products;
+        
+    //     if(qNew){
+    //         products = await Product.find().sort({createdAt: -1}).limit(5)
+    //     }else if(qCategory){
+    //         products = await Product.find({
+    //             category: {
+    //                 $in: [qCategory]
+    //             }
+    //         })
+    //     }else{
+    //         products = await apiFeatures.query;
+    //     }
+    //     res.status(200).json(products)
+    // }catch(err){
+    //     res.status(500).json(err)
+    // }
 })
 
 module.exports = router;
